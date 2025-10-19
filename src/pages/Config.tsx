@@ -19,6 +19,7 @@ interface DbConfig {
   answerColumn: string;
   clientColumn: string;
   statusColumn: string;
+  apiUrl: string;
 }
 
 const Config = () => {
@@ -35,6 +36,7 @@ const Config = () => {
     answerColumn: "",
     clientColumn: "",
     statusColumn: "",
+    apiUrl: "",
   });
 
   useEffect(() => {
@@ -58,12 +60,13 @@ const Config = () => {
   };
 
   const handleSave = () => {
-    if (!config.host || !config.database || !config.user || !config.table) {
+    if (!config.host || !config.database || !config.user || !config.table || !config.apiUrl) {
       toast.error("Preencha todos os campos obrigatórios");
       return;
     }
     
     localStorage.setItem("dbConfig", JSON.stringify(config));
+    localStorage.setItem("apiUrl", config.apiUrl);
     toast.success("Configuração salva com sucesso!");
     navigate("/dashboard");
   };
@@ -163,6 +166,27 @@ const Config = () => {
                     className="input-field"
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* URL da API Backend */}
+            <div className="space-y-4 pt-6 border-t">
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <Database className="w-5 h-5" />
+                URL da API Backend
+              </h3>
+              <div className="space-y-2">
+                <Label htmlFor="apiUrl">URL da API *</Label>
+                <Input
+                  id="apiUrl"
+                  placeholder="http://localhost:3000"
+                  value={config.apiUrl}
+                  onChange={(e) => handleChange("apiUrl", e.target.value)}
+                  className="input-field"
+                />
+                <p className="text-sm text-muted-foreground">
+                  URL completa da sua API backend que conecta ao banco de dados PostgreSQL
+                </p>
               </div>
             </div>
 
